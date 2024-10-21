@@ -26,14 +26,50 @@ const CreatePost = () => {
     setForm({ ...form, prompt: randomPrompt });
   };
 
+  // const generateImage = async () => {
+  //   if (form.prompt) {
+  //     try {
+  //       setGeneratingImg(true);
+
+  //       // Correct the fetch request
+  //       const response = await fetch("http://localhost:8080/api/v1/image", {
+  //         method: "POST", // Specify the method
+  //         headers: {
+  //           "Content-Type": "application/json",
+  //         },
+  //         body: JSON.stringify({
+  //           prompt: form.prompt, // Send the prompt as body
+  //         }),
+  //       });
+
+  //       if (!response.ok) {
+  //         throw new Error("Failed to fetch the image");
+  //       }
+
+  //       const blob = await response.blob(); // Convert the response to a blob
+  //       const imageURL = URL.createObjectURL(blob); // Create an image URL from the blob
+
+  //       // const data = await response.json();
+
+  //       // Update the form with the photo field
+  //       setForm({ ...form, photo: imageURL });
+  //     } catch (error) {
+  //       console.log("Error generating image:", error.message);
+  //     } finally {
+  //       setGeneratingImg(false);
+  //     }
+  //   } else {
+  //     alert("Please enter a prompt.");
+  //   }
+  // };
+
   const generateImage = async () => {
     if (form.prompt) {
       try {
         setGeneratingImg(true);
 
-        // Correct the fetch request
         const response = await fetch("http://localhost:8080/api/v1/image", {
-          method: "POST", // Specify the method
+          method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
@@ -46,14 +82,16 @@ const CreatePost = () => {
           throw new Error("Failed to fetch the image");
         }
 
-        const blob = await response.blob(); // Convert the response to a blob
-        const imageURL = URL.createObjectURL(blob); // Create an image URL from the blob
+        const blob = await response.blob();
+        const reader = new FileReader();
 
-        // const data = await response.json();
+        reader.onloadend = () => {
+          // Convert the image blob to base64 and update the form with the base64 string
+          const base64data = reader.result;
+          setForm({ ...form, photo: base64data }); // base64data contains the base64 string
+        };
 
-
-        // Update the form with the photo field
-        setForm({ ...form, photo: imageURL });
+        reader.readAsDataURL(blob); // Convert blob to data URL (base64)
       } catch (error) {
         console.log("Error generating image:", error.message);
       } finally {
@@ -76,7 +114,7 @@ const CreatePost = () => {
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ ...form }),
+          body: JSON.stringify({ ...form }), // This will now send the base64 image
         });
 
         await response.json();
@@ -86,7 +124,9 @@ const CreatePost = () => {
       } finally {
         setLoading(false);
       }
-    } else alert("Please enter a prompt and generate an image");
+    } else {
+      alert("Please enter a prompt and generate an image");
+    }
   };
 
   return (
@@ -120,7 +160,7 @@ const CreatePost = () => {
             handleSurpriseMe={handleSurpriseMe}
           />
 
-          <div className="relative bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 w-64 p-3 h-64 flex justify-center items-center">
+          <div className="relative bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 w-96 p-3 h-96 flex justify-center items-center">
             {form.photo ? (
               <img
                 src={form.photo}

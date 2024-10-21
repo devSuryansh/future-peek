@@ -50,6 +50,8 @@ router.route("/").post(async (req, res) => {
     // res.status(200).json({
     //   photo: `data:image/jpeg;base64,${base64Image}`,
     // });
+    console.log(response);
+    console.log(buffer);
     res.send(buffer); // Send the image buffer to the client
   } catch (error) {
     console.error("Image generation error:", error.message);
