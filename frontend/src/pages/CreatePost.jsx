@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+// import axios from "axios";
 
 import { preview } from "../assets";
 import { getRandomPrompt } from "../utils";
@@ -26,11 +27,66 @@ const CreatePost = () => {
   };
 
   const generateImage = async () => {
-    // Here
+    if (form.prompt) {
+      try {
+        setGeneratingImg(true);
+
+        // Correct the fetch request
+        const response = await fetch("http://localhost:8080/api/v1/image", {
+          method: "POST", // Specify the method
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            prompt: form.prompt, // Send the prompt as body
+          }),
+        });
+
+        if (!response.ok) {
+          throw new Error("Failed to fetch the image");
+        }
+
+        const blob = await response.blob(); // Convert the response to a blob
+        const imageURL = URL.createObjectURL(blob); // Create an image URL from the blob
+
+        // const data = await response.json();
+
+
+        // Update the form with the photo field
+        setForm({ ...form, photo: imageURL });
+      } catch (error) {
+        console.log("Error generating image:", error.message);
+      } finally {
+        setGeneratingImg(false);
+      }
+    } else {
+      alert("Please enter a prompt.");
+    }
   };
 
   const handleSubmit = async (e) => {
-    // Here
+    e.preventDefault();
+
+    if (form.prompt && form.photo) {
+      setLoading(true);
+
+      try {
+        const response = await fetch("http://localhost:8080/api/v1/post", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ ...form }),
+        });
+
+        await response.json();
+        navigate("/");
+      } catch (e) {
+        alert(e);
+      } finally {
+        setLoading(false);
+      }
+    } else alert("Please enter a prompt and generate an image");
   };
 
   return (
@@ -38,8 +94,7 @@ const CreatePost = () => {
       <div>
         <h1 className="font-extrabold text-[#222328] text-[32px]">Create</h1>
         <p className="mt-2 text-[#666e75] text-[14px] max-w-[500px]">
-          Generate an imaginative image AI and share it with the
-          community
+          Generate an imaginative image AI and share it with the community
         </p>
       </div>
 
