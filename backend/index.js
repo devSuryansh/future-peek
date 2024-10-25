@@ -9,7 +9,7 @@ import imageRoutes from "./routes/imageRoutes.js";
 dotenv.config();
 
 const app = express();
-const PORT = 8080; // Define the server port
+const PORT = process.env.PORT || 8080; // Define the server port
 
 // Middleware to parse JSON and handle CORS
 app.use(cors({origin: 'http://localhost:3000'}));
