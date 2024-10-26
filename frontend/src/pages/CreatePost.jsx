@@ -153,7 +153,7 @@ const CreatePost = () => {
             labelName="Prompt"
             type="text"
             name="prompt"
-            placeholder="An Impressionist oil painting of sunflowers in a purple vase…"
+            placeholder="A robot playing chess"
             value={form.prompt}
             handleChange={handleChange}
             isSurpriseMe
