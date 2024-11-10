@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-// import axios from "axios";
 
 import { preview } from "../assets";
 import { getRandomPrompt } from "../utils";
@@ -26,43 +25,6 @@ const CreatePost = () => {
     setForm({ ...form, prompt: randomPrompt });
   };
 
-  // const generateImage = async () => {
-  //   if (form.prompt) {
-  //     try {
-  //       setGeneratingImg(true);
-
-  //       // Correct the fetch request
-  //       const response = await fetch("http://localhost:8080/api/v1/image", {
-  //         method: "POST", // Specify the method
-  //         headers: {
-  //           "Content-Type": "application/json",
-  //         },
-  //         body: JSON.stringify({
-  //           prompt: form.prompt, // Send the prompt as body
-  //         }),
-  //       });
-
-  //       if (!response.ok) {
-  //         throw new Error("Failed to fetch the image");
-  //       }
-
-  //       const blob = await response.blob(); // Convert the response to a blob
-  //       const imageURL = URL.createObjectURL(blob); // Create an image URL from the blob
-
-  //       // const data = await response.json();
-
-  //       // Update the form with the photo field
-  //       setForm({ ...form, photo: imageURL });
-  //     } catch (error) {
-  //       console.log("Error generating image:", error.message);
-  //     } finally {
-  //       setGeneratingImg(false);
-  //     }
-  //   } else {
-  //     alert("Please enter a prompt.");
-  //   }
-  // };
-
   const generateImage = async () => {
     if (form.prompt) {
       try {
@@ -76,7 +38,7 @@ const CreatePost = () => {
               "Content-Type": "application/json",
             },
             body: JSON.stringify({
-              prompt: form.prompt, // Send the prompt as body
+              prompt: form.prompt,
             }),
           }
         );
@@ -89,12 +51,11 @@ const CreatePost = () => {
         const reader = new FileReader();
 
         reader.onloadend = () => {
-          // Convert the image blob to base64 and update the form with the base64 string
           const base64data = reader.result;
-          setForm({ ...form, photo: base64data }); // base64data contains the base64 string
+          setForm({ ...form, photo: base64data });
         };
 
-        reader.readAsDataURL(blob); // Convert blob to data URL (base64)
+        reader.readAsDataURL(blob);
       } catch (error) {
         console.log("Error generating image:", error.message);
       } finally {
@@ -119,7 +80,7 @@ const CreatePost = () => {
             headers: {
               "Content-Type": "application/json",
             },
-            body: JSON.stringify({ ...form }), // This will now send the base64 image
+            body: JSON.stringify({ ...form }),
           }
         );
 

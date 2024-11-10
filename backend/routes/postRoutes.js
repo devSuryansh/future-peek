@@ -25,12 +25,9 @@ router.route("/").get(async (req, res) => {
 router.route("/").post(async (req, res) => {
   try {
     const { name, prompt, photo } = req.body;
-    // const photoURL = await cloudinary.uploader.upload(photo);
 
-    // Check if the photo has a base64 prefix and remove it
     const base64Data = photo.replace(/^data:image\/\w+;base64,/, "");
 
-    // Upload the base64 image to Cloudinary
     const photoURL = await cloudinary.uploader.upload(
       `data:image/jpeg;base64,${base64Data}`
     );
