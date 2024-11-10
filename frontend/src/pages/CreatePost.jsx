@@ -69,7 +69,7 @@ const CreatePost = () => {
         setGeneratingImg(true);
 
         const response = await fetch(
-          "https://future-peek-backend.onrender.com/api/v1/image",
+          "http://localhost:8080/api/v1/image",
           {
             method: "POST",
             headers: {
@@ -113,7 +113,7 @@ const CreatePost = () => {
 
       try {
         const response = await fetch(
-          "https://future-peek-backend.onrender.com/api/v1/post",
+          "http://localhost:8080/api/v1/post",
           {
             method: "POST",
             headers: {
