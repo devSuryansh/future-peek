@@ -12,11 +12,15 @@ const app = express();
 const PORT = process.env.PORT || 8080; // Define the server port
 
 // Middleware to parse JSON and handle CORS
-app.use(cors({ origin: ['https://future-peek.onrender.com', 'http://localhost:3000'] }));
+app.use(
+  cors({
+    origin: ["https://future-peek.onrender.com", "http://localhost:3000"],
+  })
+);
 app.use(express.json({ limit: "50mb" }));
 
-app.use('/api/v1/post', postRoutes);
-app.use('/api/v1/image', imageRoutes);
+app.use("/api/v1/post", postRoutes);
+app.use("/api/v1/image", imageRoutes);
 
 // Route to create an image using Hugging Face's API
 // app.post("/api/v1/create-image", async (req, res) => {
@@ -56,7 +60,9 @@ app.use('/api/v1/image', imageRoutes);
 
 // Root route
 app.get("/", async (req, res) => {
-  res.status(200).json({message: "Hello, this is your image generation server!"});
+  res
+    .status(200)
+    .json({ message: "Hello, this is your image generation server!" });
 });
 
 // Start the server

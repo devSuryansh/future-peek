@@ -68,15 +68,18 @@ const CreatePost = () => {
       try {
         setGeneratingImg(true);
 
-        const response = await fetch("https://future-peek-backend.onrender.com/api/v1/image", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            prompt: form.prompt, // Send the prompt as body
-          }),
-        });
+        const response = await fetch(
+          "https://future-peek-backend.onrender.com/api/v1/image",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              prompt: form.prompt, // Send the prompt as body
+            }),
+          }
+        );
 
         if (!response.ok) {
           throw new Error("Failed to fetch the image");
@@ -109,13 +112,16 @@ const CreatePost = () => {
       setLoading(true);
 
       try {
-        const response = await fetch("https://future-peek-backend.onrender.com/api/v1/post", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ ...form }), // This will now send the base64 image
-        });
+        const response = await fetch(
+          "https://future-peek-backend.onrender.com/api/v1/post",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ ...form }), // This will now send the base64 image
+          }
+        );
 
         await response.json();
         navigate("/");

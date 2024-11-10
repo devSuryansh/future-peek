@@ -31,7 +31,9 @@ router.route("/").post(async (req, res) => {
     const base64Data = photo.replace(/^data:image\/\w+;base64,/, "");
 
     // Upload the base64 image to Cloudinary
-    const photoURL = await cloudinary.uploader.upload(`data:image/jpeg;base64,${base64Data}`);
+    const photoURL = await cloudinary.uploader.upload(
+      `data:image/jpeg;base64,${base64Data}`
+    );
 
     const newPost = await Post.create({
       name,
